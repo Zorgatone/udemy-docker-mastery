@@ -1,0 +1,25 @@
+version: '2'
+
+volumes:
+  postgresdb:
+  drupalmodules:
+  drupalprofiles:
+  drupalthemes:
+  drupalsites:
+
+services:
+  postgres:
+    image: postgres:11.0-alpine
+    environment:
+      POSTGRES_PASSWORD: Pa55w0rd1234!
+    volumes:
+      - postgresdb:/var/lib/postgresql/data
+  drupal:
+    image: drupal:8.6.2-apache
+    ports:
+      - 8080:80
+    volumes:
+      - drupalmodules:/var/www/html/modules
+      - drupalprofiles:/var/www/html/profiles
+      - drupalthemes:/var/www/html/themes
+      - drupalsites:/var/www/html/sites
