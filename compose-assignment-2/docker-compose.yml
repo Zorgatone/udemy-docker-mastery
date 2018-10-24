@@ -1,1 +1,34 @@
-# create your drupal and postgres config here, based off the last assignment
+%YAML 1.2
+---
+
+version: '2.3'
+
+volumes:
+  postgresdb:
+  drupalmodules:
+  drupalprofiles:
+  drupalthemes:
+
+services:
+  postgres:
+    image: postgres:9.6
+    environment:
+      PGDATA: &pgdata /var/lib/postgresql/data
+      POSTGRES_DB: drupal
+      POSTGRES_USER: drupal
+      POSTGRES_PASSWORD: MyPa55w0rd1234!
+    volumes:
+      - type: volume
+        source: postgresdb
+        target: *pgdata
+  drupal:
+    build: '.'
+    image: custom-drupal
+    ports:
+      - 8080:80
+    depends_on:
+      - postgres
+    volumes:
+      - drupalmodules:/var/www/html/modules
+      - drupalprofiles:/var/www/html/profiles
+      - drupalthemes/var/www/html/themes
